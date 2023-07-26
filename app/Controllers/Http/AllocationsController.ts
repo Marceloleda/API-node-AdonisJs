@@ -23,9 +23,11 @@ export default class AllocationsController {
         if (allocationStudent) {
         return response.status(409).send({ message: "student already in this classroom" });
         }
+        if(room.professor_id !== professor.id){
+            return response.status(401).send({message: "teacher is not the owner of this room"})
+        }
 
         const createAllocation = {professor_id: professor.id, room_id: room.id, student_id: student.id}
-        console.log(createAllocation)
         const allocation = await Allocation.create(createAllocation)
 
         response.status(201)
