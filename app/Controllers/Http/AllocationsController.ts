@@ -11,6 +11,10 @@ export default class AllocationsController {
         const professor = await Professor.findByOrFail('registration_number', body.registration_professor);
         const room = await Room.findByOrFail('room_number', body.room_number);
         const student = await Student.findByOrFail('email', body.email_student);
+
+        if(room.is_avaliable === false){
+            return response.status(403).send({message: "it is not possible to relocate students in this room"})
+        }
         
         const totalAllocationsInRoom = await Allocation.query().where('room_id', room.id).count('id as count');
         const totalStudentsInRoom = totalAllocationsInRoom[0].$extras.count;
@@ -56,14 +60,13 @@ export default class AllocationsController {
         }
       
         await student.delete();
-
         return {
             message: "student deleted successfully",
             data: student,
         }
     }
     public async index(){
-        const roomStudents = await Allocation.query().preload('students')
+        const roomStudents = await Allocation.query()
 
         return {
             data: roomStudents

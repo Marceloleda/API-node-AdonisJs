@@ -48,7 +48,7 @@ export default class RoomsController {
         const professor = await Professor.findByOrFail('registration_number', registration);
         const room = await Room.findOrFail(idRoom)
         if(professor.id !== room.professor_id){
-            response.status(401)
+            response.status(401).send({message: "this room does not belong to you"})
             return
         } 
         await room.delete()
