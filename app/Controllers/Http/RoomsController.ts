@@ -21,15 +21,14 @@ export default class RoomsController {
     }
     public async update({params, request, response}:HttpContextContract){
         const body = request.body()
-        const {registration, id} = params
+        const {registration, roomNumber} = params
 
         const professor = await Professor.findByOrFail('registration_number', registration);
-        const room = await Room.findByOrFail("room_number", id)
+        const room = await Room.findByOrFail("room_number", roomNumber)
         if(professor.id !== room.professor_id){
             response.status(401)
             return
         }
-
         room.room_number = body.room_number
         room.capacity = body.capacity
         room.is_avaliable = body.is_avaliable
@@ -37,6 +36,20 @@ export default class RoomsController {
         await room.save()
         return {
             message: "updated",
+            data: room,
+        }
+    }
+    public async destroy({params, response}:HttpContextContract){
+        const {registration, idRoom} = params
+        const professor = await Professor.findByOrFail('registration_number', registration);
+        const room = await Room.findOrFail(idRoom)
+        if(professor.id !== room.professor_id){
+            response.status(401)
+            return
+        } 
+        await room.delete()
+        return {
+            message: "room deleted successfully",
             data: room,
         }
     }
