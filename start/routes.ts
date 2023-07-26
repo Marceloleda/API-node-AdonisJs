@@ -37,5 +37,6 @@ Route.group(()=>{
   Route.resource("/students", "StudentsController").apiOnly()
   Route.resource("/professors", "ProfessorsController").apiOnly()
   Route.post("/rooms/:registration/professor", "RoomsController.store")
+  Route.put("/rooms/:registration/professor/:id", "RoomsController.update")
 
 }).prefix('/api')
