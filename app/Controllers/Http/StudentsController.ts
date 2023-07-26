@@ -31,4 +31,19 @@ export default class StudentsController {
             data: student,
         }
     }
+    public async update({params, request}:HttpContextContract){
+        const body = request.body()
+        const student = await Student.findOrFail(params.id)
+
+        student.name = body.name
+        student.email = body.email
+        student.registration_number = body.registration_number
+        student.date_of_birth = body.date_of_birth
+
+        await student.save()
+        return {
+            message: "updated",
+            data: student,
+        }
+    }
 }
