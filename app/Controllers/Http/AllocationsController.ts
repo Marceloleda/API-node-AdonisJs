@@ -12,19 +12,23 @@ export default class AllocationsController {
         const room = await Room.findByOrFail('room_number', body.room_number);
         const student = await Student.findByOrFail('email', body.email_student);
         
-        // const totalStudents = await Allocation.query().where('room_id', room.id).count('* as total_students');
-        // console.log(`Total de estudantes na sala ${body.room_number}: ${totalStudents[0].total_students}`);
-
+        const totalAllocationsInRoom = await Allocation.query().where('room_id', room.id).count('id as count');
+        const totalStudentsInRoom = totalAllocationsInRoom[0].$extras.count;
+        console.log(totalStudentsInRoom)
+        if (totalStudentsInRoom >= room.capacity) {
+          return response.status(409).send({ message: 'Room capacity exceeded' });
+        }
+        
         const allocationStudent = await Allocation.query()
         .where('student_id', student.id)
         .where('room_id', room.id)
         .first();
 
-        if (allocationStudent) {
-        return response.status(409).send({ message: "student already in this classroom" });
-        }
         if(room.professor_id !== professor.id){
             return response.status(401).send({message: "teacher is not the owner of this room"})
+        }
+        if (allocationStudent) {
+        return response.status(409).send({ message: "student already in this classroom" });
         }
 
         const createAllocation = {professor_id: professor.id, room_id: room.id, student_id: student.id}
