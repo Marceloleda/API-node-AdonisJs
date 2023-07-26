@@ -12,7 +12,10 @@ export default class Room extends BaseModel {
   public capacity: number
 
   @column()
-  public is_available: boolean
+  public is_avaliable: boolean
+
+  @column()
+  public professor_id: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

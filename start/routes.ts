@@ -34,6 +34,8 @@ Route.group(()=>{
       : response.badRequest(report)
   })
 
-  Route.resource("/students", "StudentsController")
-  Route.resource("/professors", "ProfessorsController")
+  Route.resource("/students", "StudentsController").apiOnly()
+  Route.resource("/professors", "ProfessorsController").apiOnly()
+  Route.post("/rooms/:registration/professor", "RoomsController.store")
+
 }).prefix('/api')

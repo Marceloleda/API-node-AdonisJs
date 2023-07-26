@@ -8,10 +8,8 @@ export default class extends BaseSchema {
       table.increments('id')
       table.string('room_number')
       table.integer('capacity')
-      table.boolean('is_available')
-      /**
-       * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
-       */
+      table.boolean('is_avaliable')
+      table.integer('professor_id').unsigned().references('professors.id').onDelete('CASCADE')
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
