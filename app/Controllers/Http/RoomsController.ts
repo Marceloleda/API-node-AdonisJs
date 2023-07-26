@@ -53,4 +53,16 @@ export default class RoomsController {
             data: room,
         }
     }
+    public async show({params, response}:HttpContextContract){
+        const {registration, idRoom} = params
+        const professor = await Professor.findByOrFail('registration_number', registration);
+        const room = await Room.findOrFail(idRoom)
+        if(professor.id !== room.professor_id){
+            response.status(401)
+            return
+        } 
+        return {
+            data: room
+        }
+    }
 }
