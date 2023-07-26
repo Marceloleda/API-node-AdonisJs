@@ -7,11 +7,11 @@ export default class RoomsController {
         const body= request.body()
         const registration = params.registration
         const professor = await Professor.findByOrFail('registration_number', registration);
-        // const roomExist = await Room.findBy('room_number', body.room_number)
+        const roomExist = await Room.findBy('room_number', body.room_number)
 
-        // if(roomExist && roomExist.professor_id === professor.id){
-        //     return 
-        // }
+        if(roomExist && roomExist.professor_id === professor.id){
+            return response.status(409).send({message: "the teacher already has this room"})
+        }
         const createRoom = {...body, professor_id: professor.id}
         console.log(createRoom)
         const room = await Room.create(createRoom)
