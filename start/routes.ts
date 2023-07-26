@@ -40,7 +40,7 @@ Route.group(()=>{
   Route.put("/rooms/:registration/professor/:roomNumber", "RoomsController.update")
   Route.delete("/rooms/:registration/professor/:idRoom", "RoomsController.destroy")
   Route.get("/rooms/:registration/professor/:idRoom", "RoomsController.show")
-  Route.post("/allocations/professor/", "AllocationsController.store")
-
+  Route.resource("/allocations/professor/", "AllocationsController").apiOnly()
+  Route.delete("/allocations/professor/:idStudent/room/:room_number", "AllocationsController.destroy")
 
 }).prefix('/api')
