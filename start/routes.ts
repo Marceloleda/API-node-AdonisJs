@@ -35,4 +35,5 @@ Route.group(()=>{
   })
 
   Route.resource("/students", "StudentsController")
+  Route.resource("/professors", "ProfessorsController")
 }).prefix('/api')
