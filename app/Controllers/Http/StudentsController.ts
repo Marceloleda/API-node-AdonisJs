@@ -2,11 +2,20 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Allocation from 'App/Models/Allocation'
 
 import Student from 'App/Models/Student'
+import { DateTime } from 'luxon'
 
 export default class StudentsController {
     public async store({request, response}:HttpContextContract){
         const body = request.body()
-
+        const studentEmailExist = await Student.findBy('email', body.email)
+        const studentRegistrationExist = await Student.findBy('registration_number', body.registration_number)
+        const isValidDate = DateTime.fromISO(body.date_of_birth).isValid;
+        if(studentEmailExist || studentRegistrationExist){
+            return response.status(409).send({message: "Student already exist!"})
+        }
+        if(!isValidDate){
+            return response.status(422).send({message: "invalid date!"})
+        }
         const student = await Student.create(body)
         response.status(201)
         return {
@@ -20,8 +29,11 @@ export default class StudentsController {
             data: student
         }
     }
-    public async destroy({params}:HttpContextContract){
-        const student = await Student.findOrFail(params.id)
+    public async destroy({params, response}:HttpContextContract){
+        const student = await Student.findBy('id', params.id)
+        if(!student){
+            return response.status(404).send({message: "not found student!"})
+        }
         await student.delete()
         return {
             message: "student deleted successfully",
