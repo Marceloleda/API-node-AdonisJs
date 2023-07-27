@@ -22,24 +22,37 @@ export default class ProfessorsController {
             data: professor
         }   
     }
-    public async show({params}:HttpContextContract){
-        const professor = await Professor.findOrFail(params.id)
+    public async show({params, response}:HttpContextContract){
+        const professor = await Professor.findBy('id',params.id)
+        if(!professor){
+            return response.status(404).send({message: "not found professor!"})
+        }
         return {
             data: professor
         }
     }
-    public async destroy({params}:HttpContextContract){
-        const professor = await Professor.findOrFail(params.id)
+    public async destroy({params, response}:HttpContextContract){
+        const professor = await Professor.findBy('id', params.id)
+        if(!professor){
+            return response.status(404).send({message: "not found professor!"})
+        }
         await professor.delete()
         return {
             message: "professor deleted successfully",
             data: professor,
         }
     }
-    public async update({params, request}:HttpContextContract){
+    public async update({params, request, response}:HttpContextContract){
         const body = request.body()
-        const professor = await Professor.findOrFail(params.id)
+        const professor = await Professor.findBy('id', params.id)
+        if(!professor){
+            return response.status(404).send({message: "not found professor!"})
+        }
+        const isValidDate = DateTime.fromISO(body.date_of_birth).isValid;
 
+        if(!isValidDate){
+            return response.status(422).send({message: "invalid date!"})
+        }
         professor.name = body.name
         professor.email = body.email
         professor.registration_number = body.registration_number
