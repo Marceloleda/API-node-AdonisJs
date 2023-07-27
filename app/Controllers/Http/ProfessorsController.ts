@@ -1,9 +1,19 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Professor from 'App/Models/Professor'
+import { DateTime } from 'luxon'
 
 export default class ProfessorsController {
     public async store({request, response}:HttpContextContract){
         const body = request.body()
+        const studentEmailExist = await Professor.findBy('email', body.email)
+        const studentRegistrationExist = await Professor.findBy('registration_number', body.registration_number)
+        const isValidDate = DateTime.fromISO(body.date_of_birth).isValid;
+        if(studentEmailExist || studentRegistrationExist){
+            return response.status(409).send({message: "Professor already exist!"})
+        }
+        if(!isValidDate){
+            return response.status(422).send({message: "invalid date!"})
+        }
 
         const professor = await Professor.create(body)
         response.status(201)
