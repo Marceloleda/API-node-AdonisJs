@@ -36,10 +36,14 @@ Route.group(()=>{
 
   Route.resource("/students", "StudentsController").apiOnly()
   Route.resource("/professors", "ProfessorsController").apiOnly()
+  
   Route.post("/rooms/:registration/professor", "RoomsController.store")
   Route.put("/rooms/:registration/professor/:roomNumber", "RoomsController.update")
   Route.delete("/rooms/:registration/professor/:idRoom", "RoomsController.destroy")
   Route.get("/rooms/:registration/professor/:idRoom", "RoomsController.show")
+  
+  Route.get("/allocations/professor/:room", "AllocationsController.index")
+
   Route.resource("/allocations/professor/", "AllocationsController").apiOnly()
   Route.delete("/allocations/professor/:idStudent/room/:room_number", "AllocationsController.destroy")
 

@@ -13,7 +13,7 @@ export default class AllocationsController {
         const student = await Student.findByOrFail('email', body.email_student);
 
         if(room.is_avaliable === false){
-            return response.status(403).send({message: "it is not possible to relocate students in this room"})
+            return response.status(401).send({message: "it is not possible to relocate students in this room"})
         }
         
         const totalAllocationsInRoom = await Allocation.query().where('room_id', room.id).count('id as count');
@@ -65,11 +65,19 @@ export default class AllocationsController {
             data: student,
         }
     }
-    public async index(){
-        const roomStudents = await Allocation.query()
+    public async index({ params, response }: HttpContextContract) {
+        const room = await Room.findBy('room_number', params.room);
+        if (!room) {
+          response.status(404);
+          return {
+            message: 'Room not found in this room',
+          };
+        }
+        const roomStudents = await Allocation.query().where('room_id', room.id).preload('students');
+        const students = roomStudents.map((allocation) => allocation.students);
 
         return {
-            data: roomStudents
-        }
+          data: students,
+        };
     }
 }
