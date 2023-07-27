@@ -40,10 +40,17 @@ export default class StudentsController {
             data: student,
         }
     }
-    public async update({params, request}:HttpContextContract){
+    public async update({params, request, response}:HttpContextContract){
         const body = request.body()
-        const student = await Student.findOrFail(params.id)
+        const student = await Student.findBy('id', params.id)
+        if(!student){
+            return response.status(404).send({message: "not found student!"})
+        }
+        const isValidDate = DateTime.fromISO(body.date_of_birth).isValid;
 
+        if(!isValidDate){
+            return response.status(422).send({message: "invalid date!"})
+        }
         student.name = body.name
         student.email = body.email
         student.registration_number = body.registration_number
