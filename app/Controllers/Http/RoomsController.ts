@@ -6,11 +6,18 @@ export default class RoomsController {
     public async store({request,params, response}:HttpContextContract){
         const body= request.body()
         const registration = params.registration
-        const professor = await Professor.findByOrFail('registration_number', registration);
-        const roomExist = await Room.findBy('room_number', body.room_number)
+        const professor = await Professor.findBy('registration_number', registration);
+        if(!professor){
+            return response.status(404).send({message: "not found professor"})
+        }
 
-        if(roomExist && roomExist.professor_id === professor.id){
-            return response.status(409).send({message: "the teacher already has this room"})
+        const existingRoom = await Room.query()
+        .where('room_number', body.room_number)
+        .where('professor_id', professor.id)
+        .first();   
+
+        if (existingRoom) {
+            return response.status(409).send({ message: "The professor already has a room with this number" });
         }
         const createRoom = {...body, professor_id: professor.id}
         console.log(createRoom)

@@ -23,7 +23,7 @@ export default class ProfessorsController {
         }   
     }
     public async show({params, response}:HttpContextContract){
-        const professor = await Professor.findBy('id',params.id)
+        const professor = await Professor.findBy('registration_number',params.id)
         if(!professor){
             return response.status(404).send({message: "not found professor!"})
         }
@@ -32,7 +32,7 @@ export default class ProfessorsController {
         }
     }
     public async destroy({params, response}:HttpContextContract){
-        const professor = await Professor.findBy('id', params.id)
+        const professor = await Professor.findBy('registration_number', params.id)
         if(!professor){
             return response.status(404).send({message: "not found professor!"})
         }
