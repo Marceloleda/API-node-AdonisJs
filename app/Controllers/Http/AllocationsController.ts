@@ -8,10 +8,18 @@ import Student from 'App/Models/Student';
 export default class AllocationsController {
     public async store({request, response}:HttpContextContract){
         const body= request.body()
-        const professor = await Professor.findByOrFail('registration_number', body.registration_professor);
-        const room = await Room.findByOrFail('room_number', body.room_number);
-        const student = await Student.findByOrFail('email', body.email_student);
-
+        const professor = await Professor.findBy('registration_number', body.registration_professor);
+        const room = await Room.findBy('room_number', body.room_number);
+        const student = await Student.findBy('email', body.email_student);
+        if(!professor){
+          return response.status(404).send({message: "not found professor"})
+        }
+        if(!room){
+          return response.status(404).send({message: "not found room"})
+        }
+        if(!student){
+          return response.status(404).send({message: "not found student"})
+        }
         if(room.is_avaliable === false){
             return response.status(401).send({message: "it is not possible to relocate students in this room"})
         }
@@ -46,7 +54,14 @@ export default class AllocationsController {
         }
     }
     public async destroy({params, response}:HttpContextContract){
-        const room = await Room.findByOrFail('room_number', params.room_number);
+        const room = await Room.findBy('room_number', params.room_number);
+        const professor = await Professor.findBy('registration_number', params.registration);
+        if(!professor){
+          return response.status(404).send({message: "not found room"})
+        }
+        if(!room){
+          return response.status(404).send({message: "not found room"})
+        }
         const student = await Allocation.query()
         .where('student_id',params.idStudent)
         .where('room_id', room.id)
@@ -66,18 +81,19 @@ export default class AllocationsController {
         }
     }
     public async index({ params, response }: HttpContextContract) {
-        const room = await Room.findBy('room_number', params.room);
-        if (!room) {
-          response.status(404);
-          return {
-            message: 'Room not found',
-          };
-        }
-        const roomStudents = await Allocation.query().where('room_id', room.id).preload('students');
-        const students = roomStudents.map((allocation) => allocation.students);
+      const room = await Room.findBy('room_number', params.room);
+      const professor = await Professor.findBy('registration_number', params.registration);
+      if (!room) {
+        return response.status(404).send({message: 'Room not found'});
+      }
+      if (!professor) {
+        return response.status(404).send({message: 'Professor not found'});
+      }
+      const roomStudents = await Allocation.query().where('room_id', room.id).where('professor_id', professor.id).preload('students');
+      const students = roomStudents.map((allocation) => allocation.students);
 
-        return {
-          data: students,
-        };
+      return {
+        data: students,
+      };
     }
 }
