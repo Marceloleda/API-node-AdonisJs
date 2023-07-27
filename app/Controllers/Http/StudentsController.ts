@@ -23,8 +23,11 @@ export default class StudentsController {
             data: student
         }   
     }
-    public async show({params}:HttpContextContract){
-        const student = await Student.findOrFail(params.id)
+    public async show({params, response}:HttpContextContract){
+        const student = await Student.findBy('id',params.id)
+        if(!student){
+            return response.status(404).send({message: "not found student!"})
+        }
         return {
             data: student
         }
