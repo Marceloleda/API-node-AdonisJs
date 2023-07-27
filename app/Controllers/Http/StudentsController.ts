@@ -45,7 +45,7 @@ export default class StudentsController {
     }
     public async update({params, request, response}:HttpContextContract){
         const body = request.body()
-        const student = await Student.findBy('id', params.id)
+        const student = await Student.findBy('registration_number', params.id)
         if(!student){
             return response.status(404).send({message: "not found student!"})
         }

@@ -44,7 +44,7 @@ export default class ProfessorsController {
     }
     public async update({params, request, response}:HttpContextContract){
         const body = request.body()
-        const professor = await Professor.findBy('id', params.id)
+        const professor = await Professor.findBy('registration_number', params.id)
         if(!professor){
             return response.status(404).send({message: "not found professor!"})
         }
