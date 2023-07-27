@@ -83,7 +83,7 @@ export default class AllocationsController {
     public async index({ params, response }: HttpContextContract) {
       const room = await Room.findBy('room_number', params.room);
       const professor = await Professor.findBy('registration_number', params.registration);
-      if (!room) {
+      if (!room || room.professor_id !== professor?.id) {
         return response.status(404).send({message: 'Room not found'});
       }
       if (!professor) {
