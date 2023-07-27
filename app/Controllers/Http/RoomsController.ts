@@ -34,10 +34,16 @@ export default class RoomsController {
         const body = request.body()
         const {registration, roomNumber} = params
 
-        const professor = await Professor.findByOrFail('registration_number', registration);
-        const room = await Room.findByOrFail("room_number", roomNumber)
+        const professor = await Professor.findBy('registration_number', registration);
+        const room = await Room.findBy("room_number", roomNumber)
+        if(!professor){
+            return response.status(404).send({message: "not found professor"})
+        }
+        if(!room){
+            return response.status(404).send({message: "not found room"})
+        }
         if(professor.id !== room.professor_id){
-            response.status(401)
+            response.status(401).send({message: "unauthorized access"})
             return
         }
         room.room_number = body.room_number
