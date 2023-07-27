@@ -8,7 +8,8 @@ Ela gerencia dados de alunos e professores utilizando o banco de dados relaciona
 
 Informações para utilizar a API.
 
-*CREATE estudante: RF01: Permitir que aluno se cadastre na aplicação
+*CREATE estudante: RF01: Permitir que aluno se cadastre na aplicação <br/>
+
 	POST
 	Rota: /api/students
 	modelo body:{
@@ -17,7 +18,9 @@ Informações para utilizar a API.
   		"registration_number": "2192022",
   		"date_of_birth": "AAAA-MM-DD"  (a data deve seguir este formato)
 	}
+ 
 *UPDATE estudante: RF02: Permitir que aluno edite seus dados de cadastro
+
 	UPDATE
 	Rota: /api/students/:registrationAluno
 	modelo body:
@@ -29,17 +32,20 @@ Informações para utilizar a API.
 	}	
 	
 *DELETE estudante: RF03: Permitir que aluno exclua seus dados de cadastro
+
 	DELETE
 	Rota: /api/students/:registrationAluno
 	
 
 *READ dados do estudante: RF04: Permitir que aluno consulte seus dados de cadastro
+
 	GET
 	Rota: /api/students/:registrationAluno
  
 ====================================================================================
 	
 *CREATE professor: RF05: Permitir que professor se cadastre na aplicação
+
 	POST
 	Rota: /api/professors
 	modelo body:{
@@ -50,6 +56,7 @@ Informações para utilizar a API.
 	}
 	
 *UPDATE professor: RF06: Permitir que professor edite seus dados de cadastro
+
 	PUT
 	Rota: /api/professors/:registrationProfessor
 	modelo body:
@@ -61,11 +68,13 @@ Informações para utilizar a API.
 	}
 	
 *DELETE professor: RF07: Permitir que professor exclua seus dados de cadastro
+
 	DELETE
 	Rota: /api/professors/:registrationProfessor
 	
 
 *READ dados do professor: RF08: Permitir que professor consulte seus dados de cadastro
+
 	GET
 	Rota: /api/professors/:registrationProfessor
 	
@@ -73,6 +82,7 @@ Informações para utilizar a API.
 
 	
 *CREATE room: RF09: Permitir que professor cadastre uma nova sala
+
 	POST
 	Rota: /api/rooms/:registration/professor
 	modelo body:
@@ -83,6 +93,7 @@ Informações para utilizar a API.
 		}
 	
 *UPDATE room: RF10: Permitir que professor edite os dados de uma sala
+
 	PUT
 	Rota: /api/rooms/:registrationProfessor/professor/:room
 	modelo body:
@@ -93,11 +104,13 @@ Informações para utilizar a API.
 	}
 	
 *DELETE room: RF11: Permitir que professor exclua os dados de uma sala
+
 	DELETE
 	Rota: /api/rooms/:registrationProfessor/professor/:room
 	
 
 *READ dados do room: RF12: Permitir que professor consulte os dados de uma sala
+
 	GET
 	Rota: /api/rooms/:registrationProfessor/professor/:room
 
@@ -105,6 +118,7 @@ Informações para utilizar a API.
 
 	
 *CREATE allocation: RF13: Permitir que professor aloque um aluno em uma sala
+
 	POST
 	Rota: /api/allocations/professor
 	modelo body:
@@ -115,14 +129,17 @@ Informações para utilizar a API.
 		}
 	
 *DELETE allocation: RF14: Permitir que professor remova o aluno de uma sala
+
 	DELETE
 	Rota: /api/allocations/professor/:registrationProfessor/student/:idStudent/room/:room
 	
 *READ allocation: RF15: Permitir que professor consulte todos os alunos de uma sala
+
 	GET
 	Rota: /api/allocations/professor/:registrationProfessor/room/:room
 
 *READ dados do allocation: RF16: Permitir que aluno consulte todas as salas que deverá comparecer
+
 	GET
 	Rota: /api/students/:registrationAluno/allocations
 
