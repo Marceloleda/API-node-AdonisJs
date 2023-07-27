@@ -33,6 +33,7 @@ Route.group(()=>{
       ? response.ok(report)
       : response.badRequest(report)
   })
+  Route.get('/students/:registration/allocations', 'StudentsController.showAllocations');
 
   Route.resource("/students", "StudentsController").apiOnly()
   Route.resource("/professors", "ProfessorsController").apiOnly()

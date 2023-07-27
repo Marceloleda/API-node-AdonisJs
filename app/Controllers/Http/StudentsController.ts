@@ -1,4 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Allocation from 'App/Models/Allocation'
 
 import Student from 'App/Models/Student'
 
@@ -41,5 +42,35 @@ export default class StudentsController {
             message: "updated",
             data: student,
         }
+    }
+    public async showAllocations({ params, response }: HttpContextContract) {
+        const studentRegistration = params.registration;
+        const student = await Student.findBy('registration_number', studentRegistration)
+        if (!student) {
+            response.status(404);
+            return {
+              message: 'student not found',
+            };
+          }
+
+        const allocations = await Allocation.query()
+          .where('student_id', student.id)
+          .preload('room')
+          .preload('professor');
+    
+        if (allocations.length === 0) {
+          response.status(404);
+          return {
+            message: 'No allocations found for this student',
+          };
+        }
+    
+        return {
+            student_name: student.name,
+            allocations: allocations.map((allocation) => ({
+              professor: allocation.professor.name,
+              room_number: allocation.room.room_number,
+            })),
+        };
     }
 }
