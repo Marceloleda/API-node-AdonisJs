@@ -43,7 +43,6 @@ Route.group(()=>{
   Route.get("/rooms/:registration/professor/:roomNumber", "RoomsController.show")
   
   Route.get("/allocations/professor/:registration/room/:room", "AllocationsController.index")
-
   Route.resource("/allocations/professor/", "AllocationsController").apiOnly()
   Route.delete("/allocations/professor/:registration/student/:idStudent/room/:room_number", "AllocationsController.destroy")
 

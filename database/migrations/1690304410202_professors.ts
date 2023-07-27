@@ -10,9 +10,7 @@ export default class extends BaseSchema {
       table.string('email').unique()
       table.string('registration_number').unique()
       table.dateTime('date_of_birth')
-      /**
-       * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
-       */
+
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
