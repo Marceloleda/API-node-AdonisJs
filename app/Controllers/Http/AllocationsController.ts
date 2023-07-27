@@ -70,7 +70,7 @@ export default class AllocationsController {
         if (!room) {
           response.status(404);
           return {
-            message: 'Room not found in this room',
+            message: 'Room not found',
           };
         }
         const roomStudents = await Allocation.query().where('room_id', room.id).preload('students');
