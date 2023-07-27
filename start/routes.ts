@@ -39,8 +39,8 @@ Route.group(()=>{
   
   Route.post("/rooms/:registration/professor", "RoomsController.store")
   Route.put("/rooms/:registration/professor/:roomNumber", "RoomsController.update")
-  Route.delete("/rooms/:registration/professor/:idRoom", "RoomsController.destroy")
-  Route.get("/rooms/:registration/professor/:idRoom", "RoomsController.show")
+  Route.delete("/rooms/:registration/professor/:roomNumber", "RoomsController.destroy")
+  Route.get("/rooms/:registration/professor/:roomNumber", "RoomsController.show")
   
   Route.get("/allocations/professor/:room", "AllocationsController.index")
 

@@ -57,9 +57,15 @@ export default class RoomsController {
         }
     }
     public async destroy({params, response}:HttpContextContract){
-        const {registration, idRoom} = params
-        const professor = await Professor.findByOrFail('registration_number', registration);
-        const room = await Room.findOrFail(idRoom)
+        const {registration, roomNumber} = params
+        const professor = await Professor.findBy('registration_number', registration);
+        const room = await Room.findBy('room_number', roomNumber)
+        if(!professor){
+            return response.status(404).send({message: "not found professor"})
+        }
+        if(!room){
+            return response.status(404).send({message: "not found room"})
+        }
         if(professor.id !== room.professor_id){
             response.status(401).send({message: "this room does not belong to you"})
             return
@@ -71,11 +77,17 @@ export default class RoomsController {
         }
     }
     public async show({params, response}:HttpContextContract){
-        const {registration, idRoom} = params
-        const professor = await Professor.findByOrFail('registration_number', registration);
-        const room = await Room.findOrFail(idRoom)
+        const {registration, roomNumber} = params
+        const professor = await Professor.findBy('registration_number', registration);
+        const room = await Room.findBy('room_number', roomNumber)
+        if(!room){
+            return response.status(404).send({message: "not found room"})
+        }
+        if(!professor){
+            return response.status(404).send({message: "not found professor"})
+        }
         if(professor.id !== room.professor_id){
-            response.status(401)
+            response.status(401).send({message: "unauthorized access"})
             return
         } 
         return {
