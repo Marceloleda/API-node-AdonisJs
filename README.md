@@ -1,6 +1,7 @@
 # desafio-node-clicksoft
 
 Deploy: https://clicksoft-node.onrender.com
+Observação: pode haver demora de respostas ao utilizar o link de deploy.
 
 Esta API foi feita utilizando node.js e o framework Adonis!
 
