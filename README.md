@@ -42,7 +42,7 @@ Informações para utilizar a API.
 	GET
 	Rota: /api/students/:registrationAluno
  
-====================================================================================
+========================================================================
 	
 *CREATE professor: RF05: Permitir que professor se cadastre na aplicação
 
@@ -78,7 +78,7 @@ Informações para utilizar a API.
 	GET
 	Rota: /api/professors/:registrationProfessor
 	
-======================================================================================
+========================================================================
 
 	
 *CREATE room: RF09: Permitir que professor cadastre uma nova sala
@@ -114,7 +114,7 @@ Informações para utilizar a API.
 	GET
 	Rota: /api/rooms/:registrationProfessor/professor/:room
 
-======================================================================================
+========================================================================
 
 	
 *CREATE allocation: RF13: Permitir que professor aloque um aluno em uma sala
